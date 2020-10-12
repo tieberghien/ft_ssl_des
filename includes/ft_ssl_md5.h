@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 12:06:13 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/12 13:26:42 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/12 14:23:37 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ typedef struct			s_arg_opts
 	char				*filename;
 	int					n_opts;
 }						t_arg_opts;
+
+typedef struct			s_cypher_cmd
+{
+	char				*cmd;
+	void                (*f)(char *, t_arg_opts *);
+}						t_cypher_cmd;
 
 typedef struct			s_digest_cmd
 {

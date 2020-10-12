@@ -6,11 +6,20 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 18:00:41 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/12 13:29:04 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/12 14:22:24 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl_md5.h"
+
+t_cypher_cmd	g_cyph[] =
+{
+	{"base64", handle_64},
+	{"des", handle_des},
+	{"des-ecb", handle_ecb},
+	{"des-cbc", handle_cbc},
+	{0}
+}
 
 t_digest_cmd	g_cmd[] =
 {
