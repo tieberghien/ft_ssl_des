@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 12:06:13 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/12 14:23:37 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 14:41:03 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 typedef struct			s_md5_ctx
 {
-	size_t				size;
 	unsigned int		message[16];
 	unsigned char		data[64];
 	uint32_t			buf[4];
@@ -31,6 +30,16 @@ typedef struct			s_md5_ctx
 	unsigned long long	datalen;
 	unsigned long long	bitlen;
 }						t_md5_ctx;
+
+typedef struct			s_sha1_ctx
+{
+	unsigned int		message[80];
+	uint8_t				data[64];
+	uint32_t			buf[5];
+	uint32_t			tmp[5];
+	unsigned int		datalen;
+	unsigned long long	bitlen;
+}						t_sha1_ctx;
 
 typedef struct			s_sha_ctx
 {
@@ -95,5 +104,9 @@ void					sha256_final(t_sha_ctx *ctx, uint8_t data[]);
 void					handle_224(char *message, t_arg_opts *opts);
 void					init_sha224(t_sha_ctx *ctx);
 int						wrong_format(char *cmd, char **error);
+void					handle_sha1(char *message, t_arg_opts *opts);
+void					init_sha1(t_sha1_ctx *ctx);
+t_sha1_ctx				sha1_update(t_sha1_ctx *ctx, char *data, size_t len);
+void					sha1_final(t_sha1_ctx *ctx, uint8_t hash[]);
 
 #endif

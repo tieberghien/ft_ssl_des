@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 13:17:22 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/15 12:44:59 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 14:20:54 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,30 @@ void	handle_224(char *message, t_arg_opts *opts)
 		ft_printf("%s (\"%s\") = ", "SHA244", message);
 	ft_printf("%08x%08x%08x%08x%08x%08x%08x", ctx.buf[0], ctx.buf[1],
 			ctx.buf[2], ctx.buf[3], ctx.buf[4], ctx.buf[5], ctx.buf[6]);
+	if (opts->rev && opts->is_file && !opts->quiet)
+		ft_printf(" %s\n", opts->filename);
+	else if (opts->rev && !opts->is_stdin && !opts->quiet)
+		ft_printf(" %s\n", message);
+	else
+		ft_printf("\n");
+}
+
+void	handle_sha1(char *message, t_arg_opts *opts)
+{
+	t_sha1_ctx	ctx;
+	uint8_t		buf[24];
+
+	init_sha1(&ctx);
+	ctx = sha1_update(&ctx, message, strlen(message));
+	sha1_final(&ctx, buf);
+	if (opts->echo && opts->is_stdin)
+		ft_printf("%s", message);
+	if (opts->is_file && !opts->rev && !opts->quiet)
+		ft_printf("%s (%s) = ", "SHA1", opts->filename);
+	else if (opts->str && !opts->is_stdin && !opts->quiet && !opts->rev)
+		ft_printf("%s (\"%s\") = ", "SHA1", message);
+	ft_printf("%08x%08x%08x%08x%08x", ctx.buf[0], ctx.buf[1],
+		ctx.buf[2], ctx.buf[3], ctx.buf[4]);
 	if (opts->rev && opts->is_file && !opts->quiet)
 		ft_printf(" %s\n", opts->filename);
 	else if (opts->rev && !opts->is_stdin && !opts->quiet)
