@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 12:06:13 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/15 16:02:32 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 19:04:09 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,19 @@ typedef struct			s_digest_cmd
 	void				(*f)(char *, t_arg_opts *);
 }						t_digest_cmd;
 
+typedef struct			s_pbkdf
+{
+	t_digest_cmd		hmac;
+	size_t				hlen;
+	const uint8_t		*pass;
+	size_t				plen;
+	const uint8_t		*salt;
+	size_t				slen;
+	uint8_t				*key;
+	size_t				klen;
+	unsigned int		rounds;
+}						t_pbkdf;
+
 int						parse_opts(char *flags, t_arg_opts *opts);
 int						parse_args(char **av, char *b, t_arg_opts o, int i);
 char					*get_file(char *file);
@@ -110,5 +123,6 @@ t_sha1_ctx				sha1_update(t_sha1_ctx *ctx, char *data, size_t len);
 void					sha1_final(t_sha1_ctx *ctx, uint8_t hash[]);
 void					base64_encode(char *message, t_arg_opts *opts);
 void					base64_decode(char *cypher, t_arg_opts *opts);
+void					gen_key(t_pbkdf *pbkdf, t_arg_opts *opts, char *pass);
 
 #endif

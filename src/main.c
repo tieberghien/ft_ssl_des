@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 18:00:41 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/15 14:57:31 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 17:40:18 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,13 @@ int				main(int ac, char **av)
 		buf = get_stdin();
 		opts.is_stdin = 1;
 	}
+	/*
 	parse_args(av, buf, opts, -1);
 	if (buf != NULL)
 		free(buf);
+	*/
+	t_pbkdf df;
+
+	gen_key(&df, &opts, buf);
 	return (0);
 }
