@@ -6,7 +6,7 @@
 #    By: etieberg <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/19 12:25:25 by etieberg          #+#    #+#              #
-#    Updated: 2020/10/15 14:02:11 by etieberg         ###   ########.fr        #
+#    Updated: 2020/10/15 14:57:48 by etieberg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRC			=	main.c		\
 				sha1.c			\
 				rotation.c	\
 				display_hash.c	\
-				handle_error.c
+				handle_error.c	\
+				base64.c
 
 OBJ_NAME		=	$(SRC:.c=.o)
 

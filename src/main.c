@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 18:00:41 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/15 13:57:33 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 14:57:31 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 /*
 t_cypher_cmd	g_cyph[] =
 {
-	{"base64", handle_64},
-	{"des", handle_des},
-	{"des-ecb", handle_ecb},
-	{"des-cbc", handle_cbc},
+	{"base64", base64_encode},
+//	{"des", handle_des},
+//	{"des-ecb", handle_ecb},
+//	{"des-cbc", handle_cbc},
 	{0}
 }
 */
@@ -27,6 +27,7 @@ t_digest_cmd	g_cmd[] =
 	{"sha256", handle_256},
 	{"sha224", handle_224},
 	{"sha1", handle_sha1},
+	{"base64", base64_encode},
 	{0}
 };
 

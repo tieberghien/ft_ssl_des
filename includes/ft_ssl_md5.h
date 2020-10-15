@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 12:06:13 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/15 14:41:03 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 16:02:32 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct			s_arg_opts
 typedef struct			s_cypher_cmd
 {
 	char				*cmd;
-	void                (*f)(char *, t_arg_opts *);
+	void                (*f)(char *);
 }						t_cypher_cmd;
 
 typedef struct			s_digest_cmd
@@ -108,5 +108,7 @@ void					handle_sha1(char *message, t_arg_opts *opts);
 void					init_sha1(t_sha1_ctx *ctx);
 t_sha1_ctx				sha1_update(t_sha1_ctx *ctx, char *data, size_t len);
 void					sha1_final(t_sha1_ctx *ctx, uint8_t hash[]);
+void					base64_encode(char *message, t_arg_opts *opts);
+void					base64_decode(char *cypher, t_arg_opts *opts);
 
 #endif
