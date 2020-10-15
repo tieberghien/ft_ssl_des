@@ -6,12 +6,12 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 18:00:41 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/12 14:22:24 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:44:54 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl_md5.h"
-
+/*
 t_cypher_cmd	g_cyph[] =
 {
 	{"base64", handle_64},
@@ -20,7 +20,7 @@ t_cypher_cmd	g_cyph[] =
 	{"des-cbc", handle_cbc},
 	{0}
 }
-
+*/
 t_digest_cmd	g_cmd[] =
 {
 	{"md5", handle_md5},
@@ -113,8 +113,11 @@ int				main(int ac, char **av)
 		return (-1);
 	ft_bzero(&buf, sizeof(char*));
 	if (opts.echo == 1 || (ac - opts.n_opts) == 2)
-		if ((buf = get_stdin()) != NULL)
-			opts.is_stdin = 1;
+	{
+	//	if ((buf = get_stdin()) != NULL)
+		buf = get_stdin();
+		opts.is_stdin = 1;
+	}
 	parse_args(av, buf, opts, -1);
 	if (buf != NULL)
 		free(buf);

@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:33:43 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/12 12:06:34 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:43:54 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ char	*get_stdin(void)
 	{
 		ret = update_buffer(ret, buff, total_size, rd);
 		total_size += rd;
-		if (ret[total_size - 1] == '\n')
-			break ;
 	}
 	if (rd < 0)
 		return (NULL);

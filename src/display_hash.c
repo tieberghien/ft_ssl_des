@@ -6,11 +6,10 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 18:06:50 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/11 19:44:04 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:32:05 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "ft_ssl_md5.h"
 
 void	rev_endian(unsigned n)
