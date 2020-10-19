@@ -11,16 +11,16 @@
 /* ************************************************************************** */
 
 #include "ft_ssl_md5.h"
-/*
+
 t_cypher_cmd	g_cyph[] =
 {
-	{"base64", base64_encode},
-//	{"des", handle_des},
+	{"base64", base64},
+	{"des", handle_des},
 //	{"des-ecb", handle_ecb},
 //	{"des-cbc", handle_cbc},
 	{0}
-}
-*/
+};
+/*
 t_digest_cmd	g_cmd[] =
 {
 	{"md5", handle_md5},
@@ -30,36 +30,48 @@ t_digest_cmd	g_cmd[] =
 	{"base64", base64_encode},
 	{0}
 };
-
-int				get_cmd(char *cmd)
+*/
+static int				get_cypher(char *cmd, t_options *opts)
 {
 	int i;
 
 	i = 0;
-	while (g_cmd[i].cmd)
+	while (g_cyph[i].cmd)
 	{
-		if (!(ft_strncmp(g_cmd[i].cmd, cmd, ft_strlen(g_cmd[i].cmd))))
-			return (i);
+		if (!(ft_strncmp(g_cyph[i].cmd, cmd, ft_strlen(g_cyph[i].cmd))))
+		{
+			if (!(invalid_opts(cmd, opts)))
+				return (0);
+			else
+				return (i);
+		}
+	//	else
+	//	{
+	//		ft_printf("ft_ssl: Error: '%s' is an invalid command.\n", cmd);
+	//	}
 		i++;
 	}
 	return (-1);
 }
 
-int				parse_args(char **av, char *buf, t_arg_opts opts, int i)
+int				parse_args(char **av, char *buf, t_options opts, int i)
 {
 	int	j;
 
-	while (g_cmd[++i].cmd)
-		if (!(ft_strncmp(g_cmd[i].cmd, av[1], ft_strlen(g_cmd[i].cmd))))
+	while (g_cyph[++i].cmd)
+		if (!(ft_strncmp(g_cyph[i].cmd, av[1], ft_strlen(g_cyph[i].cmd))))
 		{
 			j = 1;
+			//if (!(invalid_opts(av[1], &opts)))
+			//	return (0);
 			if (opts.is_stdin)
-				g_cmd[i].f(buf, &opts);
+				g_cyph[i].f(buf, &opts, av);
 			while (av[opts.n_opts + ++j])
 			{
 				opts.is_stdin = 0;
 				if (av[opts.n_opts + j][0] == '-')
-					return (wrong_format(g_cmd[i].cmd, &av[opts.n_opts + j]));
+					return (wrong_format(g_cyph[i].cmd, &av[opts.n_opts + j]));
+				/*
 				if ((buf = get_file(av[opts.n_opts + j])))
 				{
 					opts.is_file = 1;
@@ -68,29 +80,32 @@ int				parse_args(char **av, char *buf, t_arg_opts opts, int i)
 					free(buf);
 				}
 				else
-					g_cmd[i].f(av[opts.n_opts + j], &opts);
+				*/
+					g_cyph[i].f(av[opts.n_opts + j], &opts, av);
 			}
 		}
 	return (0);
 }
 
-int				check_format(int ac, char **av, int str)
+static int				check_format(int ac, char **av, t_options *opts)
 {
 	if (ac < 2)
 	{
 		ft_printf(USAGE);
 		return (-1);
 	}
-	if (get_cmd(av[1]) == -1)
+	if (get_cypher(av[1], opts) == -1)
 	{
-		ft_printf("ft_ssl: Error: '%s' is an invalid command.\n");
+		ft_printf("ft_ssl: Error: '%s' is an invalid command.\n", av[1]);
 		return (-1);
 	}
+/*
 	if (str && ac == 3)
 	{
 		ft_printf("option requires an argument -- s\n");
 		return (-1);
 	}
+*/
 	return (0);
 }
 
@@ -98,12 +113,13 @@ int				main(int ac, char **av)
 {
 	int			i;
 	char		*buf;
-	t_arg_opts	opts;
+	t_options	opts;
+	t_pbkdf		df;
 
 	i = 2;
-	if (check_format(ac, av, 0) == -1)
-		return (-1);
-	ft_bzero(&opts, sizeof(t_arg_opts));
+//	if (check_format(ac, av) == -1)
+//		return (-1);
+	ft_bzero(&opts, sizeof(t_options));
 	while (av[i] && av[i][0] == '-')
 	{
 		if (!parse_opts(av[i], &opts))
@@ -111,22 +127,27 @@ int				main(int ac, char **av)
 		opts.n_opts++;
 		i++;
 	}
-	if (check_format(ac, av, opts.str) == -1)
+	if (check_format(ac, av, &opts) < 0)
 		return (-1);
 	ft_bzero(&buf, sizeof(char*));
-	if (opts.echo == 1 || (ac - opts.n_opts) == 2)
+	if ((ac - opts.n_opts) == 2)
 	{
 	//	if ((buf = get_stdin()) != NULL)
 		buf = get_stdin();
 		opts.is_stdin = 1;
 	}
-	/*
+	puts("AAAAAAAAAAA");
+	if (!(init_pbkdf(&df, &opts, av)))
+		return (-1);
+	gen_key(&df, &opts, buf);
 	parse_args(av, buf, opts, -1);
+/*
 	if (buf != NULL)
 		free(buf);
-	*/
-	t_pbkdf df;
+*/
+//	t_pbkdf df;
 
-	gen_key(&df, &opts, buf);
+//	gen_key(&df, &opts, NULL);
+//	g_cyph[0].f(buf, &opts);
 	return (0);
 }

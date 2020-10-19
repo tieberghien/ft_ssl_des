@@ -86,14 +86,17 @@ void	handle_224(char *message, t_arg_opts *opts)
 		ft_printf("\n");
 }
 
-void	handle_sha1(char *message, t_arg_opts *opts)
+void	handle_sha1(char *message, t_arg_opts *opts, char *key)
 {
 	t_sha1_ctx	ctx;
 	uint8_t		buf[24];
 
+	(void)opts;
 	init_sha1(&ctx);
 	ctx = sha1_update(&ctx, message, strlen(message));
 	sha1_final(&ctx, buf);
+	sprintf(key, "%08X%08X", ctx.buf[0], ctx.buf[1]);
+	/*
 	if (opts->echo && opts->is_stdin)
 		ft_printf("%s", message);
 	if (opts->is_file && !opts->rev && !opts->quiet)
@@ -108,4 +111,5 @@ void	handle_sha1(char *message, t_arg_opts *opts)
 		ft_printf(" %s\n", message);
 	else
 		ft_printf("\n");
+	*/
 }

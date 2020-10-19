@@ -63,10 +63,25 @@ typedef struct			s_arg_opts
 	int					n_opts;
 }						t_arg_opts;
 
+typedef struct			s_options
+{
+	int			dec;
+	int			enc;
+	int			input;
+	int			output;
+	int			base;
+	int			key;
+	int			pass;
+	int			salt;
+	int			iv;
+	int			is_stdin;
+	int			n_opts;
+}				t_options;
+
 typedef struct			s_cypher_cmd
 {
 	char				*cmd;
-	void                (*f)(char *);
+	void                (*f)(char *, t_options *, char **av);
 }						t_cypher_cmd;
 
 typedef struct			s_digest_cmd
@@ -83,13 +98,15 @@ typedef struct			s_pbkdf
 	size_t				plen;
 	const uint8_t		*salt;
 	size_t				slen;
-	uint8_t				*key;
+	uint8_t				key[8];
 	size_t				klen;
 	unsigned int		rounds;
+	const uint8_t		*input;
+	const uint8_t		*output;
 }						t_pbkdf;
 
-int						parse_opts(char *flags, t_arg_opts *opts);
-int						parse_args(char **av, char *b, t_arg_opts o, int i);
+int						parse_opts(char *flags, t_options *opts);
+int						parse_args(char **av, char *b, t_options o, int i);
 char					*get_file(char *file);
 char					*get_stdin(void);
 void					md5_algo(t_md5_ctx *ctx, uint8_t data[]);
@@ -117,12 +134,16 @@ void					sha256_final(t_sha_ctx *ctx, uint8_t data[]);
 void					handle_224(char *message, t_arg_opts *opts);
 void					init_sha224(t_sha_ctx *ctx);
 int						wrong_format(char *cmd, char **error);
-void					handle_sha1(char *message, t_arg_opts *opts);
+int					invalid_opts(char *cmd, t_options *opts);
+void					handle_sha1(char *message, t_arg_opts *opts, char *key);
 void					init_sha1(t_sha1_ctx *ctx);
 t_sha1_ctx				sha1_update(t_sha1_ctx *ctx, char *data, size_t len);
 void					sha1_final(t_sha1_ctx *ctx, uint8_t hash[]);
-void					base64_encode(char *message, t_arg_opts *opts);
-void					base64_decode(char *cypher, t_arg_opts *opts);
-void					gen_key(t_pbkdf *pbkdf, t_arg_opts *opts, char *pass);
+void					base64(char *message, t_options *opts, char **av);
+void					base64_encode(char *message, t_options *opts);
+void					base64_decode(char *cypher, t_options *opts);
+void					gen_key(t_pbkdf *pbkdf, t_options *opts, char *pass);
+void					handle_des(char *message, t_options *opts, char **av);
+int             init_pbkdf(t_pbkdf *pbkdf, t_options *opts, char **av);
 
 #endif

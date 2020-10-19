@@ -35,7 +35,7 @@ uint8_t revchar(char ch)
 	return (ch);
 }
 
-void	base64_encode(char *data, t_arg_opts *opts)
+void	base64_encode(char *data, t_options *opts)
 {
 	(void)opts;
 	size_t input_length;
@@ -74,7 +74,7 @@ void	build_decoding_table() {
         decoding_table[g_charset[i]] = i;
 }
 
-void    base64_decode(char *data, t_arg_opts *opts)
+void    base64_decode(char *data, t_options *opts)
 {
 	(void)opts;
 	size_t input_length;
@@ -107,4 +107,14 @@ void    base64_decode(char *data, t_arg_opts *opts)
         if (j < (int)output_length) decoded_data[j++] = (triple >> 1 * 8) & 0xFF;
         if (j < (int)output_length) decoded_data[j++] = (triple >> 0 * 8) & 0xFF;
     }
+	puts((char*)decoded_data);
+}
+
+void	base64(char *message, t_options *opts, char **av)
+{
+	(void)av;
+	if (opts->dec)
+		base64_decode(message, opts);
+	else
+		base64_encode(message, opts);	
 }

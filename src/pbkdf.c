@@ -18,10 +18,15 @@ t_digest_cmd g_cmd[] =
 	{0}
 }
 */
-void		gen_key(t_pbkdf *pbkdf, t_arg_opts *opts, char *pass)
+void		gen_key(t_pbkdf *pbkdf, t_options *opts, char *pass)
 {
-	(void)pbkdf;
+	(void)opts;
+	t_arg_opts test;
 //	pbkdf->pass = pass;
-	handle_sha1(pass, opts);
-}:wq
+	if (pbkdf->pass != NULL)
+		handle_sha1((char*)pbkdf->pass, &test, (char*)pbkdf->key);
+	else
+		handle_sha1(pass, &test, (char*)pbkdf->key);
+	puts((char*)pbkdf->key);
+}
 

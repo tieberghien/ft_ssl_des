@@ -26,7 +26,8 @@ SRC			=	main.c		\
 				display_hash.c	\
 				handle_error.c	\
 				base64.c		\
-				pbkdf.c
+				pbkdf.c		\
+				des.c
 
 OBJ_NAME		=	$(SRC:.c=.o)
 
@@ -36,7 +37,7 @@ OBJ_PATH		=	obj/
 OBJ			=	$(addprefix $(OBJ_PATH),$(OBJ_NAME))
 
 CC			=	gcc
-CFLAGS			=	-Wall -Werror -Wextra #-fsanitize=address #-03 -g
+CFLAGS			=	-Wall -Werror -Wextra -fsanitize=address #-03 -g
 LDFLAGS			=	-Llibft -lft
 
 INC_DIR			=	includes
