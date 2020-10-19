@@ -98,7 +98,7 @@ typedef struct			s_pbkdf
 	size_t				plen;
 	const uint8_t		*salt;
 	size_t				slen;
-	uint8_t				key[8];
+	uint8_t				key[32];
 	size_t				klen;
 	unsigned int		rounds;
 	const uint8_t		*input;
@@ -118,7 +118,7 @@ uint64_t				left_rotation_64(uint64_t x, int n);
 uint32_t				right_rotation(uint32_t x, int n);
 uint64_t				right_rotation_64(uint64_t x, int n);
 void					rev_endian(unsigned n);
-void					handle_md5(char *message, t_arg_opts *opts);
+void					handle_md5(char *message, t_arg_opts *opts, char *key);
 void					init_md5(t_md5_ctx *ctx);
 t_md5_ctx				md5_update(t_md5_ctx *ctx, char *data, size_t len);
 t_md5_ctx				md5_final(t_md5_ctx *ctx, uint8_t hash[]);
@@ -145,5 +145,11 @@ void					base64_decode(char *cypher, t_options *opts);
 void					gen_key(t_pbkdf *pbkdf, t_options *opts, char *pass);
 void					handle_des(char *message, t_options *opts, char **av);
 int             init_pbkdf(t_pbkdf *pbkdf, t_options *opts, char **av);
+
+
+
+
+int hmac_sha1 (const void *key, size_t keylen, const void *in, size_t inlen, void *resbuf);
+
 
 #endif
