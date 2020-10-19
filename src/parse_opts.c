@@ -12,38 +12,26 @@
 
 #include "ft_ssl_md5.h"
 
-int		parse_opts(char *flags, t_options *opts)
+int		parse_opts(char *flag, t_options *opts, int i)
 {
-	int i;
-
-	i = 1;
-	while (flags && flags[i] && ft_strchr("adeikopsv", flags[i]))
-	{
-		if (flags[i] == 'a')
-			opts->base = 1;
-		else if (flags[i] == 'd')
-			opts->dec = 1;
-		else if (flags[i] == 'e')
-			opts->enc = 1;
-		else if (flags[i] == 'i')
-			opts->input = i;
-		else if (flags[i] == 'k')
-			opts->key = i;
-		else if (flags[i] == 'o')
-			opts->output = i;
-		else if (flags[i] == 'p')
-			opts->pass = i;
-		else if (flags[i] == 's')
-			opts->salt = i;
-		else if (flags[i] == 'v')
-			opts->iv = i;
-		i++;
-	}
-	if (flags && flags[i] != '\0')
-	{
-		ft_printf("%s -- invalid option\n", flags);
-		return (0);
-	}
+	if (!(ft_strcmp(flag, "-a")))
+		opts->base = 1;
+	else if (!(ft_strcmp(flag, "-d")))
+		opts->dec = 1;
+	else if (!(ft_strcmp(flag, "-e")))
+		opts->enc = 1;
+	else if (!(ft_strcmp(flag, "-i")))
+		opts->input = i;
+	else if (!(ft_strcmp(flag, "-k")))
+		opts->key = i;
+	else if (!(ft_strcmp(flag, "-o")))
+		opts->output = i;
+	else if (!(ft_strcmp(flag, "-p")))
+		opts->pass = i;
+	else if (!(ft_strcmp(flag, "-s")))
+		opts->salt = i;
+	else if (!(ft_strcmp(flag, "-v")))
+		opts->iv = i;
 	return (1);
 }
 
@@ -51,8 +39,8 @@ int		init_pbkdf(t_pbkdf *pbkdf, t_options *opts, char **av)
 {
 	if (opts->pass)
 	{
-		if (av[opts->pass + 2] && av[opts->pass + 2])
-			pbkdf->pass = (const uint8_t *)ft_strdup(av[opts->pass + 2]);
+		if (av[opts->pass + 1])
+			pbkdf->pass = (const uint8_t *)ft_strdup(av[opts->pass + 1]);
 		else
 		{
 			ft_putendl("missing source argument for -p");
@@ -61,17 +49,24 @@ int		init_pbkdf(t_pbkdf *pbkdf, t_options *opts, char **av)
 	}
 	if (opts->input)
 	{
-		if (av[opts->input + 2])
-			pbkdf->input = (const uint8_t *)ft_strdup(av[opts->input + 2]);
+		if (av[opts->input + 1])
+			pbkdf->input = (const uint8_t *)ft_strdup(av[opts->input + 1]);
 		else
 			ft_putendl("missing file argument for -i");
 	}
-	else if (opts->output)
+	if (opts->output)
 	{
-		if (av[opts->input + 2])
-			pbkdf->output = (const uint8_t *)ft_strdup(av[opts->output + 2]);
+		if (av[opts->input + 1])
+			pbkdf->output = (const uint8_t *)ft_strdup(av[opts->output + 1]);
 		else
 			ft_putendl("missing file argument for -o");
+	}
+	if (opts->salt)
+	{
+		if (av[opts->salt + 1])
+			pbkdf->salt = (const uint8_t *)ft_strdup(av[opts->salt + 1]);
+		else
+			ft_putendl("missing salt argument for -s");
 	}
 	return (1);
 }
@@ -79,7 +74,7 @@ int		init_pbkdf(t_pbkdf *pbkdf, t_options *opts, char **av)
 int		invalid_opts(char *cmd, t_options *opts)
 {
 	if (ft_strncmp("base64", cmd, 6) == 0 && (opts->key || opts->pass
-		|| opts->salt || opts->base || opts->iv))
+				|| opts->salt || opts->base || opts->iv))
 	{
 		ft_putstr("base64: invalid option --\n");
 		return (0);

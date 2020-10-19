@@ -66,12 +66,14 @@ int				parse_args(char **av, char *buf, t_options opts, int i)
 			//	return (0);
 			if (opts.is_stdin)
 				g_cyph[i].f(buf, &opts, av);
+			else
+				g_cyph[i].f(av[opts.pass + 2], &opts, av);
+			/*
 			while (av[opts.n_opts + ++j])
 			{
 				opts.is_stdin = 0;
-				if (av[opts.n_opts + j][0] == '-')
-					return (wrong_format(g_cyph[i].cmd, &av[opts.n_opts + j]));
-				/*
+			//	if (av[opts.n_opts + j][0] == '-')
+			//		return (wrong_format(g_cyph[i].cmd, &av[opts.n_opts + j]));
 				if ((buf = get_file(av[opts.n_opts + j])))
 				{
 					opts.is_file = 1;
@@ -80,9 +82,9 @@ int				parse_args(char **av, char *buf, t_options opts, int i)
 					free(buf);
 				}
 				else
-				*/
 					g_cyph[i].f(av[opts.n_opts + j], &opts, av);
 			}
+			*/
 		}
 	return (0);
 }
@@ -114,15 +116,12 @@ int				main(int ac, char **av)
 	int			i;
 	char		*buf;
 	t_options	opts;
-	t_pbkdf		df;
 
 	i = 2;
-//	if (check_format(ac, av) == -1)
-//		return (-1);
 	ft_bzero(&opts, sizeof(t_options));
-	while (av[i] && av[i][0] == '-')
+	while (av[i])
 	{
-		if (!parse_opts(av[i], &opts))
+		if (!parse_opts(av[i], &opts, i))
 			return (0);
 		opts.n_opts++;
 		i++;
@@ -130,24 +129,11 @@ int				main(int ac, char **av)
 	if (check_format(ac, av, &opts) < 0)
 		return (-1);
 	ft_bzero(&buf, sizeof(char*));
-	if ((ac - opts.n_opts) == 2)
+	if (!opts.pass && (ac - opts.n_opts) == 2)
 	{
-	//	if ((buf = get_stdin()) != NULL)
 		buf = get_stdin();
 		opts.is_stdin = 1;
 	}
-	puts("AAAAAAAAAAA");
-	if (!(init_pbkdf(&df, &opts, av)))
-		return (-1);
-	gen_key(&df, &opts, buf);
 	parse_args(av, buf, opts, -1);
-/*
-	if (buf != NULL)
-		free(buf);
-*/
-//	t_pbkdf df;
-
-//	gen_key(&df, &opts, NULL);
-//	g_cyph[0].f(buf, &opts);
 	return (0);
 }

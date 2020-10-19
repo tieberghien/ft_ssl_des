@@ -105,7 +105,7 @@ typedef struct			s_pbkdf
 	const uint8_t		*output;
 }						t_pbkdf;
 
-int						parse_opts(char *flags, t_options *opts);
+int						parse_opts(char *flags, t_options *opts, int i);
 int						parse_args(char **av, char *b, t_options o, int i);
 char					*get_file(char *file);
 char					*get_stdin(void);
