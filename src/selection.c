@@ -6,7 +6,7 @@
 /*   By: etieberg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 13:17:22 by etieberg          #+#    #+#             */
-/*   Updated: 2020/10/15 14:57:35 by etieberg         ###   ########.fr       */
+/*   Updated: 2020/10/20 13:24:44 by etieberg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	handle_224(char *message, t_arg_opts *opts)
 	else
 		ft_printf("\n");
 }
+
+/*
 static void sha1_xor(t_sha1_ctx *ctx, t_sha1_ctx *tmp)
 {
   ctx->buf[0] ^= tmp->buf[0];
@@ -123,7 +125,8 @@ hmac_sha1 (const void *key, size_t keylen,
   char block[64];
   char innerhash[20];
 
-  /* Reduce the key's size, so that it becomes <= 64 bytes large.  */
+  *//* Reduce the key's size, so that it becomes <= 64 bytes large.  */
+/*
   if (keylen > 64)
     {
       t_sha1_ctx ctx;
@@ -135,8 +138,8 @@ hmac_sha1 (const void *key, size_t keylen,
       key = buf;
       keylen = 20;
     }
-  /* Compute INNERHASH from KEY and IN.  */
-
+  */ /* Compute INNERHASH from KEY and IN.  */
+/*
   init_sha1(&inner);
 
   memset (block, IPAD, sizeof (block));
@@ -147,8 +150,8 @@ hmac_sha1 (const void *key, size_t keylen,
 	sha1_final(&inner, (uint8_t*)innerhash);
 //  sha1_finish_ctx (&inner, innerhash);
 
-  /* Compute result from KEY and INNERHASH.  */
-
+  */ /* Compute result from KEY and INNERHASH.  */
+/*
   init_sha1(&outer);
 
   memset (block, OPAD, sizeof (block));
@@ -159,37 +162,29 @@ hmac_sha1 (const void *key, size_t keylen,
          sha1_final(&outer, resbuf);
 
 	ft_printf("%08X%08X\n", outer.buf[0], outer.buf[1]);
+	*/
 /*
   sha1_process_block (block, 64, &outer);
   sha1_process_bytes (innerhash, 20, &outer);
 
   sha1_finish_ctx (&outer, resbuf);
 */
+/*
   return 0;
 }
-
+*/
 
 
 void	handle_sha1(char *message, t_arg_opts *opts, char *key)
 {
 	t_sha1_ctx	ctx;
-	t_sha1_ctx	copy;
 	uint8_t		buf[24];
 
-	int i = -1;
 	(void)opts;
 	init_sha1(&ctx);
 	ctx = sha1_update(&ctx, message, strlen(message));
 	sha1_final(&ctx, buf);
-	sprintf(key, "%08x%08x%08x%08x%08x", ctx.buf[0], ctx.buf[1], ctx.buf[2], ctx.buf[3], ctx.buf[4]);
-	copy = ctx;
-	while (++i < 20)
-	{
-		copy = sha1_update(&copy, key, strlen(message));
-		sha1_final(&copy, (uint8_t*)key);
-		sha1_xor(&ctx, &copy);
-	}
-	sprintf(key, "%08X%08X", ctx.buf[0], ctx.buf[1]);
+	sprintf(key, "%08X%08X%08X%08X%08X", ctx.buf[0], ctx.buf[1], ctx.buf[2], ctx.buf[3], ctx.buf[4]);
 	/*
 	if (opts->echo && opts->is_stdin)
 		ft_printf("%s", message);

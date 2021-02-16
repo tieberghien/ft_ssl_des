@@ -6,7 +6,7 @@
 #    By: etieberg <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/19 12:25:25 by etieberg          #+#    #+#              #
-#    Updated: 2020/10/15 17:39:17 by etieberg         ###   ########.fr        #
+#    Updated: 2020/10/20 14:02:33 by etieberg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC			=	main.c		\
 				handle_error.c	\
 				base64.c		\
 				pbkdf.c		\
-				des.c
+				des.c		\
+				shift_des.c
 
 OBJ_NAME		=	$(SRC:.c=.o)
 
